@@ -5,6 +5,28 @@ import { createTheme } from "@mui/material";
 export const tokens = (mode) => ({
   ...(mode === "dark"
     ? {
+        primary: {
+          100: "#d0d1d5",
+          200: "#a1a4ab",
+          300: "#727681",
+          400: "#434957",
+          500: "#141b2d",
+          600: "#101624",
+          700: "#0c101b",
+          800: "#080b12",
+          900: "#040509",
+        },
+        secondary:{
+          100: "#323232",
+          200: "#646465",
+          300: "#959697",
+          400: "#c7c8ca",
+          500: "#f9fafc",
+          600: "#fafbfd",
+          700: "#fbfcfd",
+          800: "#fdfdfe",
+          900: "#fefefe",
+        },
         white: {
           100: "#323232",
           200: "#646465",
@@ -26,6 +48,17 @@ export const tokens = (mode) => ({
           700: "#b988f1",
           800: "#d0aff5",
           900: "#e8d7fa",
+        },
+        black: {
+          100: "#d0d1d5",
+          200: "#a1a4ab",
+          300: "#727681",
+          400: "#434957",
+          500: "#141b2d",
+          600: "#101624",
+          700: "#0c101b",
+          800: "#080b12",
+          900: "#040509",
         },
         blue: {
           100: "#0b1e2e",
@@ -73,6 +106,39 @@ export const tokens = (mode) => ({
         },
       }
     : {
+        primary: {
+          100: "#fefefe",
+          200: "#fdfdfe",
+          300: "#fbfcfd",
+          400: "#fafbfd",
+          500: "#f9fafc",
+          600: "#c7c8ca",
+          700: "#959697",
+          800: "#646465",
+          900: "#323232",
+        },
+        secondary:{
+          100: "#d0d1d5",
+          200: "#a1a4ab",
+          300: "#727681",
+          400: "#434957",
+          500: "#141b2d",
+          600: "#101624",
+          700: "#0c101b",
+          800: "#080b12",
+          900: "#040509",
+        },
+        black: {
+          100: "#d0d1d5",
+          200: "#a1a4ab",
+          300: "#727681",
+          400: "#434957",
+          500: "#141b2d",
+          600: "#101624",
+          700: "#0c101b",
+          800: "#080b12",
+          900: "#040509",
+        },
         white: {
           100: "#fefefe",
           200: "#fdfdfe",
@@ -152,7 +218,7 @@ export const themeSettings = (mode) => {
       ...(mode === "dark"
         ? {
             primary: {
-              main: colors.purple[500],
+              main: colors.primary[500],
             },
             secondary: {
               main: colors.green[500],
@@ -163,7 +229,7 @@ export const themeSettings = (mode) => {
               light: colors.green[100],
             },
             background: {
-              default: colors.purple[500],
+              default: colors.primary[600],
             },
           }
         : {
@@ -179,7 +245,7 @@ export const themeSettings = (mode) => {
               light: colors.purple[100],
             },
             background: {
-              default: colors.white[500],
+              default: colors.primary[500],
             },
           }),
     },

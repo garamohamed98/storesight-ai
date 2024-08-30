@@ -12,14 +12,14 @@ const Topbar = () => {
   const colorMode = useContext(ColorModeContext);
 
   return (
-    <Box display="flex" justifyContent="end" sx={{boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.2)", p: "1rem 2rem 1rem 2rem !important"}} backgroundColor={colors.white[100]}>
+    <Box display="flex" justifyContent="end" sx={{boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.2)", p: "1rem 2rem 1rem 2rem !important"}} backgroundColor={colors.primary[500]}>
       {/* IconButtons */}
       <Box display="flex" >
         <IconButton onClick={colorMode.toggleColorMode}>
-          {theme.palette.mode === "dark"?<DarkModeOutlinedIcon /> :<LightModeOutlinedIcon />}
+          {theme.palette.mode === "dark"?<DarkModeOutlinedIcon sx={{color:colors.secondary[500]}}/> :<LightModeOutlinedIcon sx={{color:colors.secondary[500]}}/>}
         </IconButton>
         <IconButton>
-          <NotificationsIcon />
+          <NotificationsIcon sx={{color:colors.secondary[500]}}/>
         </IconButton>
       </Box>
     </Box>
