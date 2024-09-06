@@ -16,7 +16,8 @@ export const tokens = (mode) => ({
           800: "#080b12",
           900: "#040509",
         },
-        secondary:{
+
+        secondary: {
           100: "#323232",
           200: "#646465",
           300: "#959697",
@@ -107,17 +108,17 @@ export const tokens = (mode) => ({
       }
     : {
         primary: {
-          100: "#fefefe",
-          200: "#fdfdfe",
-          300: "#fbfcfd",
-          400: "#fafbfd",
-          500: "#f9fafc",
-          600: "#c7c8ca",
-          700: "#959697",
+          100: "#ffffff",
+          200: "#ffffff",
+          300: "#ffffff",
+          400: "#ffffff",
+          500: "#fefefe",
+          600: "#f9fafc",
+          700: "#f3f4f6",
           800: "#646465",
           900: "#323232",
         },
-        secondary:{
+        secondary: {
           100: "#d0d1d5",
           200: "#a1a4ab",
           300: "#727681",
@@ -218,15 +219,15 @@ export const themeSettings = (mode) => {
       ...(mode === "dark"
         ? {
             primary: {
-              main: colors.primary[500],
+              main: colors.purple[500],
             },
             secondary: {
-              main: colors.green[500],
+              main: colors.blue[500],
             },
             neutral: {
-              dark: colors.green[700],
-              main: colors.green[500],
-              light: colors.green[100],
+              dark: colors.blue[700],
+              main: colors.blue[500],
+              light: colors.blue[100],
             },
             background: {
               default: colors.primary[600],
@@ -237,28 +238,28 @@ export const themeSettings = (mode) => {
               main: colors.purple[500],
             },
             secondary: {
-              main: colors.purple[500],
+              main: colors.blue[500],
             },
             neutral: {
-              dark: colors.purple[700],
-              main: colors.purple[500],
-              light: colors.purple[100],
+              dark: colors.blue[700],
+              main: colors.blue[500],
+              light: colors.blue[100],
             },
             background: {
-              default: colors.primary[500],
+              default: colors.primary[600],
             },
           }),
     },
-    Typography: {
+    typography: {
       fontFamily: ["Inter", "sans-serif"].join(","),
-      fontSize: 12,
+      fontSize: 14,
       h1: {
         fontFamily: ["Inter", "sans-serif"].join(","),
-        fontSize: 40,
+        fontSize: 32,
       },
       h2: {
         fontFamily: ["Inter", "sans-serif"].join(","),
-        fontSize: 32,
+        fontSize: 18,
       },
       h3: {
         fontFamily: ["Inter", "sans-serif"].join(","),

@@ -3,7 +3,8 @@ import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
-
+import { Route, Routes } from "react-router-dom";
+import QueuesMonitoring from "./scenes/queuesMonitoring";
 function App() {
   const [theme, colorMode] = useMode();
   return (
@@ -14,7 +15,9 @@ function App() {
           <Sidebar />
           <main className="content">
             <Topbar />
-            <p>main</p>
+            <Routes>
+              <Route path="/queuesMonitoring" element={<QueuesMonitoring />} />
+            </Routes>
           </main>
         </div>
       </ThemeProvider>

@@ -102,56 +102,64 @@ const Sidebar = () => {
               title="Dashboard"
               to="/"
               icon={<DashboardIcon />}
-              selected={setSelected}
+              selected={selected}
+              setSelected={setSelected}
               isCollapsed={isCollapsed}
             />
             <Item
               title="Customer Profiles"
               to="/customer"
               icon={<PersonIcon />}
-              selected={setSelected}
+              selected={selected}
+              setSelected={setSelected}
               isCollapsed={isCollapsed}
             />
             <Item
               title="Selsperson Performance"
               to="/Selsperson"
               icon={<EngineeringIcon />}
-              selected={setSelected}
+              selected={selected}
+              setSelected={setSelected}
               isCollapsed={isCollapsed}
             />
             <Item
-              title="Queue Monitoring"
-              to="/queue"
+              title="Queues Monitoring"
+              to="/queuesMonitoring"
               icon={<PeopleIcon />}
-              selected={setSelected}
+              selected={selected}
+              setSelected={setSelected}
               isCollapsed={isCollapsed}
             />
             <Item
               title="Interaction Monitoring"
               to="/interaction"
               icon={<QuestionAnswerIcon />}
-              selected={setSelected}
+              selected={selected}
+              setSelected={setSelected}
               isCollapsed={isCollapsed}
             />
             <Item
               title="Restocking & Inventory"
               to="/restocking"
               icon={<InventoryIcon />}
-              selected={setSelected}
+              selected={selected}
+              setSelected={setSelected}
               isCollapsed={isCollapsed}
             />
             <Item
               title="Reports & Insights"
               to="/reports"
               icon={<AssignmentIcon />}
-              selected={setSelected}
+              selected={selected}
+              setSelected={setSelected}
               isCollapsed={isCollapsed}
             />
             <Item
               title="Settings & Configuration"
               to="/settings"
               icon={<SettingsIcon />}
-              selected={setSelected}
+              selected={selected}
+              setSelected={setSelected}
               isCollapsed={isCollapsed}
             />
           </Box>
