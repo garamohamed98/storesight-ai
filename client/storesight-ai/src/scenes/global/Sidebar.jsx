@@ -23,7 +23,7 @@ const Item = ({ title, to, icon, selected, setSelected, isCollapsed }) => {
     <MenuItem
       active={selected === title}
       style={{
-        color:colors.white[500],
+        color: colors.white[500],
         backgroundColor: ishover ? colors.black[400] : "transparent",
         margin: "10px",
         borderRadius: "5px",
@@ -64,7 +64,7 @@ const Sidebar = () => {
         },
         "& .pro-icon": {
           animation: "none !important",
-          transform: "none !important", 
+          transform: "none !important",
         },
       }}
     >
@@ -89,7 +89,9 @@ const Sidebar = () => {
                   />
                 </Box>
                 <IconButton>
-                  <MenuOutlinedIcon sx={{color: `${colors.white[500]} !important`}}/>
+                  <MenuOutlinedIcon
+                    sx={{ color: `${colors.white[500]} !important` }}
+                  />
                 </IconButton>
               </Box>
             )}

@@ -1,14 +1,15 @@
-import {
-  Box,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../theme";
-import { useState } from "react";
-import { realTimeQueueStatusData } from "../data/mockData";
 
-const CustomDataGrid = ({ title, columns, filters, filterModel }) => {
+const CustomDataGrid = ({
+  title,
+  columns,
+  rows,
+  filters,
+  filterModel,
+  onFilterModelChange,
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -18,8 +19,8 @@ const CustomDataGrid = ({ title, columns, filters, filterModel }) => {
       borderRadius="8px"
       boxShadow="0px 0px 5px rgba(0, 0, 0, 0.1)"
     >
-      <Box p="20px" display="flex" justifyContent="space-between">
-        <Typography variant="h2" fontWeight="700">
+      <Box p="40px 20px" display="flex" justifyContent="space-between">
+        <Typography variant="h2" fontWeight="700" color={colors.secondary[300]}>
           {title}
         </Typography>
         {filters}
@@ -40,11 +41,12 @@ const CustomDataGrid = ({ title, columns, filters, filterModel }) => {
         }}
       >
         <DataGrid
-          rows={realTimeQueueStatusData}
+          rows={rows}
           columns={columns}
           getRowId={(row) => row.queueName}
           filterModel={filterModel}
           disableColumnMenu={true}
+          onFilterModelChange={onFilterModelChange}
         />
       </Box>
     </Box>

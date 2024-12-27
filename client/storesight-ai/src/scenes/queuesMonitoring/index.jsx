@@ -1,70 +1,21 @@
-import {
-  Box,
-  Checkbox,
-  FormControl,
-  FormGroup,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import Header from "../../components/Header";
+import RealTimeQueueStatusLineGraphFilters from "../../Filters/RealTimeQueueStatusLineGraphFilters";
+import {
+  realTimeQueueStatus,
+  realTimeQueueStatusData,
+  realTimeQueueStatusToChartData,
+  waitingTimeData,
+  waitingTimeDataToChartData,
+} from "../../data/mockData";
+import LineGraph from "../../components/LineGraph";
+import useRealTimeQueueStatusLineGraphFilters from "../../hooks/UseRealTimeQueueStatusLineGraphFilters";
 import CustomDataGrid from "../../components/CustomDataGrid";
-import DropDownMenu from "../../components/DropDownMenu";
-import { MenuItem } from "react-pro-sidebar";
-import RangeSlider from "../../components/RangeSlider";
 import ColoredLabel, { ColorKey } from "../../components/ColoredLabel";
-import { useState } from "react";
-
-const Filters = ({
-  handleFilterSearch,
-  handleRangeSliderChange,
-  rangeSliderValues,
-}) => {
-  return (
-    <DropDownMenu>
-      <MenuItem onKeyDown={(e) => e.stopPropagation()}>
-        <Typography marginBottom="5px">Queue Length Range</Typography>
-        <RangeSlider
-          rangeSliderValues={rangeSliderValues}
-          handleChange={handleRangeSliderChange}
-        />
-      </MenuItem>
-      <MenuItem onKeyDown={(e) => e.stopPropagation()}>
-        <TextField
-          id="search-queue"
-          label="Search Queue"
-          variant="outlined"
-          onChange={handleFilterSearch}
-        />
-      </MenuItem>
-      <MenuItem onKeyDown={(e) => e.stopPropagation()}>
-        <Typography marginBottom="5px">Queue Status</Typography>
-        <FormGroup>
-          <FormControl>
-            <Box display="flex">
-              <Checkbox defaultChecked />
-              <ColoredLabel colorKey={ColorKey.GREEN} text="Low Queue Length" />
-            </Box>
-          </FormControl>
-          <FormControl>
-            <Box display="flex">
-              <Checkbox defaultChecked />
-              <ColoredLabel
-                colorKey={ColorKey.YELLOW}
-                text="Moderate Queue Length"
-              />
-            </Box>
-          </FormControl>
-          <FormControl>
-            <Box display="flex">
-              <Checkbox defaultChecked />
-              <ColoredLabel colorKey={ColorKey.RED} text="High Queue Length" />
-            </Box>
-          </FormControl>
-        </FormGroup>
-      </MenuItem>
-    </DropDownMenu>
-  );
-};
+import { useMemo } from "react";
+import RealTimeQueueStatusTableFilters from "../../Filters/RealTimeQueueStatusTableFilters";
+import useRealTimeQueueStatusTableFilters from "../../hooks/useRealTimeQueueStatusTableFilters";
+import HorizontalBarGraph from "../../components/HorizontalBarGraph";
 
 const RealTimeQueueStatusLabel = ({ status, text }) => {
   if (status === "Low Queue Length")
@@ -77,96 +28,214 @@ const RealTimeQueueStatusLabel = ({ status, text }) => {
 };
 
 const QueuesMonitoring = () => {
-  const [filterModel, setFilterModel] = useState({ items: [] });
-  const [rangeSliderValues, setRangeSliderValues] = useState([0, 100]);
+  const {
+    filterModel,
+    onFilterModelChange,
+    getMinRange,
+    getMaxRange,
+    handleFilterSearch,
+    handleRangeSliderChange,
+    rangeSliderValues,
+    checkboxChecked,
+    handleCheckBox1,
+    handleCheckBox2,
+    handleCheckBox3,
+  } = useRealTimeQueueStatusTableFilters(realTimeQueueStatusData);
 
-  const handleRangeSliderChange = (event, newValue) => {
-    setRangeSliderValues(newValue);
-    console.log(newValue);
-  };
+  console.log("the error: " + checkboxChecked);
 
-  const handleFilterSearch = (e) => {
-    const textField = e.target.value;
-    const existingFilterIndex = filterModel.items.findIndex(
-      (item) => item.id === 1
-    );
+  const {
+    timeWindow,
+    updateFrequency,
+    dateRange,
+    filteredData,
+    handleTimeWindowChange,
+    handleUpdateFrequency,
+    handleDateRange,
+  } = useRealTimeQueueStatusLineGraphFilters(realTimeQueueStatus);
 
-    console.log(textField);
-    if (textField.trim() === "") {
-      if (existingFilterIndex !== -1) {
-        setFilterModel((prevFilterModel) => ({
-          items: prevFilterModel.items.filter(
-            (_, index) => index !== existingFilterIndex
-          ),
-        }));
-      }
-    } else {
-      setFilterModel((prevFilterModel) => {
-        const newItems = [...prevFilterModel.items];
+  const {
+    timeWindow: averageWaitingTimeTimeWindow,
+    updateFrequency: averageWaitingTimeupdateFrequency,
+    dateRange: averageWaitingTimedateRange,
+    filteredData: averageWaitingTimeFilteredData,
+    handleTimeWindowChange: averageWaitingTimehandleTimeWindowChange,
+    handleUpdateFrequency: averageWaitingTimeHandleUpdateFrequency,
+    handleDateRange: averageWaitingTimeHandleDateRange,
+  } = useRealTimeQueueStatusLineGraphFilters(waitingTimeData);
 
-        if (existingFilterIndex !== -1) {
-          newItems[existingFilterIndex] = {
-            ...newItems[existingFilterIndex],
-            value: textField,
-          };
-        } else {
-          newItems.push({
-            id: 1,
-            field: "queueName",
-            operator: "contains",
-            value: textField,
-          });
+  console.log(
+    "is the data filtered?: " + realTimeQueueStatusToChartData(filteredData)
+  );
+  const rangeOnlyOperators = useMemo(() => {
+    const operator = {
+      label: "Between",
+      value: "between",
+      getApplyFilterFn: (filterItem) => {
+        if (!Array.isArray(filterItem.value) || filterItem.value.length !== 2) {
+          return null;
         }
+        if (filterItem.value[0] == null || filterItem.value[1] == null) {
+          return null;
+        }
+        return (value) => {
+          console.log("what ?");
 
-        return { items: newItems };
-      });
-    }
-  };
-
-  const handleClearFilter = () => {
-    setFilterModel({ items: [] });
-  };
-
-  const columns = [
-    { field: "queueName", headerName: "Queue Name", flex: 1 },
-    {
-      field: "realTimeQueueLength",
-      headerName: "Real Time Queue Length",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
-      flex: 1,
-    },
-    {
-      field: "realTimeQueueStatus",
-      headerName: "Real Time Queue Status",
-      flex: 1,
-      renderCell: ({ row: { realTimeQueueStatus } }) => {
-        return (
-          <RealTimeQueueStatusLabel
-            status={realTimeQueueStatus}
-            text={realTimeQueueStatus}
-          />
-        );
+          return (
+            value != null &&
+            filterItem.value[0] <= value &&
+            value <= filterItem.value[1]
+          );
+        };
       },
-    },
-  ];
+    };
+
+    return [operator];
+  }, []);
+
+  const equalOnlyOperators = useMemo(() => {
+    const operator = {
+      label: "Equal",
+      value: "equal",
+      getApplyFilterFn: (filterItem) => {
+        if (!Array.isArray(filterItem.value) || filterItem.value.length !== 3) {
+          return null;
+        }
+        if (
+          filterItem.value[0] == null ||
+          filterItem.value[1] == null ||
+          filterItem.value == null
+        ) {
+          return null;
+        }
+        return (value) => {
+          return (
+            value != null &&
+            (filterItem.value[0] === value ||
+              filterItem.value[1] === value ||
+              filterItem.value[2] === value)
+          );
+        };
+      },
+    };
+
+    return [operator];
+  }, []);
 
   return (
-    <Box m="20px">
-      <Header title="Queues Monitoring" />
-      <CustomDataGrid
-        columns={columns}
-        title="Monitor Real-Time Queue Status"
-        filters={
-          <Filters
-            handleFilterSearch={handleFilterSearch}
-            handleRangeSliderChange={handleRangeSliderChange}
-            rangeSliderValues={rangeSliderValues}
-          />
-        }
-        filterModel={filterModel}
-      />
+    <Box
+      m="20px"
+      display="grid"
+      gap="20px"
+      gridTemplateColumns="repeat(12, 1fr)"
+    >
+      <Box gridColumn="span 12">
+        <Header title="Queues Monitoring" />
+      </Box>
+      <Box gridColumn="span 12">
+        <CustomDataGrid
+          columns={[
+            {
+              field: "queueName",
+              headerName: "Queue Name",
+              flex: 1,
+              filterable: true,
+            },
+            {
+              field: "realTimeQueueLength",
+              headerName: "Real Time Queue Length",
+              type: "number",
+              headerAlign: "left",
+              align: "left",
+              flex: 1,
+              filterable: true,
+              filterOperators: rangeOnlyOperators,
+            },
+            {
+              field: "realTimeQueueStatus",
+              headerName: "Real Time Queue Status",
+              flex: 1,
+              filterOperators: equalOnlyOperators,
+              renderCell: ({ row: { realTimeQueueStatus } }) => {
+                return (
+                  <RealTimeQueueStatusLabel
+                    status={realTimeQueueStatus}
+                    text={realTimeQueueStatus}
+                  />
+                );
+              },
+            },
+          ]}
+          rows={realTimeQueueStatusData}
+          title="Monitor Real-Time Queue Status"
+          filters={
+            <RealTimeQueueStatusTableFilters
+              getMinRange={getMinRange}
+              getMaxRange={getMaxRange}
+              handleFilterSearch={handleFilterSearch}
+              handleRangeSliderChange={handleRangeSliderChange}
+              rangeSliderValues={rangeSliderValues}
+              checkboxChecked={checkboxChecked}
+              handleCheckBox1={handleCheckBox1}
+              handleCheckBox2={handleCheckBox2}
+              handleCheckBox3={handleCheckBox3}
+            />
+          }
+          filterModel={filterModel}
+          onFilterModelChange={onFilterModelChange}
+        />
+      </Box>
+      <Box gridColumn="span 6">
+        <LineGraph
+          title="Real-Time Queue Status: Queues Length Over Timer"
+          xData={realTimeQueueStatusToChartData(filteredData).labels}
+          yData={realTimeQueueStatusToChartData(filteredData).data}
+          xTitle="Time Period "
+          yTitle="Queue Length"
+          flag="Current Number Of Queues"
+          lowLimit={4}
+          mediumLimit={7}
+          filters={
+            <RealTimeQueueStatusLineGraphFilters
+              timeWindow={timeWindow}
+              updateFrequency={updateFrequency}
+              dateRange={dateRange}
+              handleTimeWindowChange={handleTimeWindowChange}
+              handleUpdateFrequency={handleUpdateFrequency}
+              handleDateRange={handleDateRange}
+            />
+          }
+        />
+      </Box>
+      <Box gridColumn="span 6">
+        <LineGraph
+          title="Real-Time Average Waiting Time: Trends Over Time"
+          xData={
+            waitingTimeDataToChartData(averageWaitingTimeFilteredData).labels
+          }
+          yData={
+            waitingTimeDataToChartData(averageWaitingTimeFilteredData).data
+          }
+          xTitle="Time Period "
+          yTitle="Average Waiting Time (Minutes)"
+          flag="Average waiting time per time period"
+          lowLimit={4}
+          mediumLimit={7}
+          filters={
+            <RealTimeQueueStatusLineGraphFilters
+              timeWindow={averageWaitingTimeTimeWindow}
+              updateFrequency={averageWaitingTimeupdateFrequency}
+              dateRange={averageWaitingTimedateRange}
+              handleTimeWindowChange={averageWaitingTimehandleTimeWindowChange}
+              handleUpdateFrequency={averageWaitingTimeHandleUpdateFrequency}
+              handleDateRange={averageWaitingTimeHandleDateRange}
+            />
+          }
+        />
+      </Box>
+      <Box gridColumn="span 6">
+        <HorizontalBarGraph />
+      </Box>
     </Box>
   );
 };
