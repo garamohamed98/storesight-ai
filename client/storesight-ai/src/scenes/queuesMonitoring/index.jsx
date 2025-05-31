@@ -15,7 +15,7 @@ import ColoredLabel, { ColorKey } from "../../components/ColoredLabel";
 import { useMemo } from "react";
 import RealTimeQueueStatusTableFilters from "../../Filters/RealTimeQueueStatusTableFilters";
 import useRealTimeQueueStatusTableFilters from "../../hooks/useRealTimeQueueStatusTableFilters";
-import HorizontalBarGraph from "../../components/HorizontalBarGraph";
+//import HorizontalBarGraph from "../../components/HorizontalBarGraph";
 
 const RealTimeQueueStatusLabel = ({ status, text }) => {
   if (status === "Low Queue Length")
@@ -234,7 +234,7 @@ const QueuesMonitoring = () => {
         />
       </Box>
       <Box gridColumn="span 6">
-        <HorizontalBarGraph />
+    
       </Box>
     </Box>
   );
